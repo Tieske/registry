@@ -1,0 +1,7 @@
+project='registry'
+title='Windows registry manipulation'
+description='Pure Lua module to fiddle with the Windows registry'
+format='discount'
+file='./src/registry.lua'
+dir='doc'
+readme='readme.md'

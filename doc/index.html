@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <title>Windows registry manipulation</title>
+    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+</head>
+<body>
+
+<div id="container">
+
+<div id="product">
+	<div id="product_logo"></div>
+	<div id="product_name"><big><b></b></big></div>
+	<div id="product_description"></div>
+</div> <!-- id="product" -->
+
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+<br/>
+<h1>registry</h1>
+
+
+<h2>Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+</ul>
+
+
+<h2>Modules</h2>
+<ul>
+  <li><strong>registry</strong></li>
+</ul>
+<h2>Topics</h2>
+<ul>
+  <li><a href="topics/readme.md.html">readme.md</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+<h1>Module <code>registry</code></h1>
+
+<p>Module to fiddle with the Windows registry.</p>
+<p> Version 0.1, <a href="http://www.thijsschreijer.nl">copyright (c) 2013 - Thijs Schreijer</a></p>
+
+
+<h2><a href="#Functions">Functions</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" nowrap><a href="#getkey">getkey&nbsp;(key, recursive)</a></td>
+	<td class="summary">Returns the contents of a registry key.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#createkey">createkey&nbsp;(key)</a></td>
+	<td class="summary">Creates a key</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#deletekey">deletekey&nbsp;(key)</a></td>
+	<td class="summary">Deletes a key (and all of its contents)</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#writevalue">writevalue&nbsp;(key, name, vtype, value)</a></td>
+	<td class="summary">write a value (will create the key in the process).</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#deletevalue">deletevalue&nbsp;(key, name)</a></td>
+	<td class="summary">Deletes a value.</td>
+	</tr>
+	<tr>
+	<td class="name" nowrap><a href="#getvalue">getvalue&nbsp;(key, name)</a></td>
+	<td class="summary">Returns a value.</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+
+
+    <h2><a name="Functions"></a>Functions</h2>
+    <dl class="function">
+    <dt>
+    <a name = "getkey"></a>
+    <strong>getkey&nbsp;(key, recursive)</strong>
+    </dt>
+    <dd>
+
+<p>Returns the contents of a registry key.
+ returns a tree structure with the registry key
+ the key-table has fields:
+   key    : the full key, eg. "HKEY<em>CLASSES</em>ROOT\somekey\subkey\subsubkey"
+   keys   : table (indexed by name) with key-table of the sub key (same structure)
+   values : table (indexed by name) with a values-table having fields:</p>
+<pre><code>      value: the value
+      type : the registry value type, eg. REG_SZ, REG_MULTI_SZ, etc.
+      name : the name
+</code></pre>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+         full key eg. "HKLM\SOFTWARE\xPL"</li>
+        <li><span class="parameter">recursive</span>
+         if truthy, then a recursive tree will be generated will all sub keys as well</li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "createkey"></a>
+    <strong>createkey&nbsp;(key)</strong>
+    </dt>
+    <dd>
+    Creates a key
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+         the registry key to create</li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> on success, <code>nil+err</code> on failure
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "deletekey"></a>
+    <strong>deletekey&nbsp;(key)</strong>
+    </dt>
+    <dd>
+    Deletes a key (and all of its contents)
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+         the registry key to delete</li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> on success, <code>nil+err</code> on failure (deleting a non-existing key returns success)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "writevalue"></a>
+    <strong>writevalue&nbsp;(key, name, vtype, value)</strong>
+    </dt>
+    <dd>
+    write a value (will create the key in the process).
+ Will overwrite existing values without prompt
+ use <code>name = "(Default)"</code> (or <code>nil</code>) for default value
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+         the registry key to which to add a value</li>
+        <li><span class="parameter">name</span>
+         the name of the value to add</li>
+        <li><span class="parameter">vtype</span>
+         the value type to add</li>
+        <li><span class="parameter">value</span>
+         the actual value</li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> on success, <code>nil+err</code> on failure
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "deletevalue"></a>
+    <strong>deletevalue&nbsp;(key, name)</strong>
+    </dt>
+    <dd>
+    Deletes a value.
+ use name = "(Default)" for default value, or name = nil
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+         the registry key from which to delete a value</li>
+        <li><span class="parameter">name</span>
+         the name of the value to delete</li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>true</code> on success, <code>nil+err</code> on failure (deleting a non-existing value returns success)
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "getvalue"></a>
+    <strong>getvalue&nbsp;(key, name)</strong>
+    </dt>
+    <dd>
+    Returns a value.
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">key</span>
+         the registry key from which to get the value</li>
+        <li><span class="parameter">name</span>
+         the name of the value</li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        <code>value</code> + <a href="http://www.lua.org/manual/5.1/manual.html#pdf-type">type</a>  or <code>nil</code> if it doesn't exist
+    </ol>
+
+
+
+
+</dd>
+</dl>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.3.12</a></i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
